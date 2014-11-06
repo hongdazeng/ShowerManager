@@ -21,7 +21,13 @@ public class ShowerManager {
         endtime = inputProcessor(0, 13, uin, "set end time");
 
         totalhours = totaltime(starttime, endtime);
-        String[][] timetable = new String[totalhours][numstall];
+        String[][] timetable = new String[totalhours * 3][numstall];
+        for (int a1 = 0; a1 < timetable.length ; a1++) {
+            for (int a2 = 0; a2 < timetable[a1].length; a2++) {
+                timetable[a1][a2] = "isFree    ";
+            }
+        }
+        display(timetable, starttime, endtime);
 
 
 
@@ -51,6 +57,8 @@ public class ShowerManager {
         int top = 0;    // total number of hours managed before midnight
         int bot = 0;    // total number of hours managed after midnight
 
+        
+
         if (start == 12) {
             top = 12;
         } else {
@@ -64,5 +72,22 @@ public class ShowerManager {
         }
 
         return top + bot;
+    }
+
+    public static void display(String[][] tb, int start, int end) {
+    	int curmin = 0;
+        System.out.println("<><><>Shower Listings<><><>");
+        System.out.print("Stalls:   ");
+        for (int stall = 0; stall < tb[0].length; stall++) {
+            System.out.print("Stall " + (stall + 1) + "   ");
+        }
+        for (int b1 = 0; b1 < tb.length; b1++) {
+            for (int b2 = 0; b2 < tb[0].length; b2++) {
+                for (int b3 = 0; b3 < 3; b3++) {
+                    curmin = (b3) * 20;
+                }
+            }
+            System.out.println("");
+        }
     }
 }
