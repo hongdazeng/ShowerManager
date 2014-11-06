@@ -1,5 +1,6 @@
 import java.util.*;
 import javax.swing.*;
+import java.io.*;
 
 public class ShowerManager {
     public static void main(String[] args) {
@@ -27,7 +28,7 @@ public class ShowerManager {
                 timetable[a1][a2] = "isFree    ";
             }
         }
-        display(timetable, starttime, endtime);
+        System.out.println(captureddisplay(timetable, starttime, endtime));
 
 
 
@@ -72,6 +73,24 @@ public class ShowerManager {
         }
 
         return top + bot;
+    }
+
+    public static String captureddisplay(String[][] tb, int start, int end) {
+    	// code from Ernest Friedman-Hill via stackoverflow
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        // IMPORTANT: Save the old System.out!
+        PrintStream old = System.out;
+        // Tell Java to use your special stream
+        System.setOut(ps);
+        // The display to spill its guts
+        display(tb, start, end);
+        // Put things back
+        System.out.flush();
+        System.setOut(old);
+        // Show what happened
+        System.out.println("Here: " + baos.toString());
+        return baos.toString();
     }
 
     public static void display(String[][] tb, int start, int end) {
