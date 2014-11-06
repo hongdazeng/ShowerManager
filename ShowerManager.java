@@ -57,7 +57,7 @@ public class ShowerManager {
         int top = 0;    // total number of hours managed before midnight
         int bot = 0;    // total number of hours managed after midnight
 
-        
+
 
         if (start == 12) {
             top = 12;
@@ -75,19 +75,39 @@ public class ShowerManager {
     }
 
     public static void display(String[][] tb, int start, int end) {
-    	int curmin = 0;
+        int curstart = start;
+        int curend =  end + 12;
+        String[] minlist = {"00", "20", "40"};
+        int currbuild = 0;
+
+        int curmin = 0;
         System.out.println("<><><>Shower Listings<><><>");
         System.out.print("Stalls:   ");
         for (int stall = 0; stall < tb[0].length; stall++) {
-            System.out.print("Stall " + (stall + 1) + "   ");
-        }
+            System.out.print("Stall " + (stall + 1) + "     ");
+        } // print the line of stalls
+        System.out.println();
+
         for (int b1 = 0; b1 < tb.length; b1++) {
-            for (int b2 = 0; b2 < tb[0].length; b2++) {
-                for (int b3 = 0; b3 < 3; b3++) {
-                    curmin = (b3) * 20;
-                }
+            if (curstart < 10) {
+                System.out.print("0" + curstart + ":" + minlist[currbuild % 3] + "     ");
+            } else {
+                System.out.print(curstart + ":" + minlist[currbuild % 3] + "     ");
             }
-            System.out.println("");
+            currbuild++;
+            if (currbuild == 3) {
+                currbuild = 0;
+                curstart++;
+            }
+            if (curstart > 12) {
+                curstart = 1;
+            }
+            for (int b2 = 0; b2 < tb[0].length; b2++) {
+                System.out.print(tb[b1][b2] + "  ");
+            }
+            System.out.println(""); //move to a new line
         }
+
     }
+
 }
