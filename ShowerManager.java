@@ -3,6 +3,9 @@ import javax.swing.*;
 import java.io.*;
 
 public class ShowerManager {
+
+    static String[][] timetable;
+
     public static void main(String[] args) {
         JOptionPane.showMessageDialog(null, "Welcome to Shower Manager 1.0", "Welcome", JOptionPane.PLAIN_MESSAGE);
 
@@ -22,7 +25,7 @@ public class ShowerManager {
         endtime = inputProcessor(0, 13, uin, "set end time");
 
         totalhours = totaltime(starttime, endtime);
-        String[][] timetable = new String[totalhours * 3][numstall];
+        timetable = new String[totalhours * 3][numstall];
         for (int a1 = 0; a1 < timetable.length ; a1++) {
             for (int a2 = 0; a2 < timetable[a1].length; a2++) {
                 timetable[a1][a2] = "isFree    ";
@@ -76,7 +79,7 @@ public class ShowerManager {
     }
 
     public static String captureddisplay(String[][] tb, int start, int end) {
-    	// code from Ernest Friedman-Hill via stackoverflow
+        // code from Ernest Friedman-Hill via stackoverflow
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
         // IMPORTANT: Save the old System.out!
@@ -127,6 +130,11 @@ public class ShowerManager {
             System.out.println(""); //move to a new line
         }
 
+    }
+
+    public static void reserve() {
+        String husk = JOptionPane.showInputDialog("Please enter the hour you wish to reserve a shower stall in 24 hour format ", "0 to 23");
+        int starthour = inputProcessor(0, 23, husk, "hour to reserve");
     }
 
 }
