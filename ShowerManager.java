@@ -31,10 +31,9 @@ public class ShowerManager {
                 timetable[a1][a2] = "isFree    ";
             }
         }
-        System.out.println(captureddisplay(timetable, starttime, endtime));
-
-
-
+        captureddisplay(timetable, starttime, endtime);
+        savecell(1, 1);
+        captureddisplay(timetable, starttime, endtime);
     }   // end main
 
     public static int inputProcessor (int botlimit, int toplimit, String userinput, String reminder) {
@@ -72,7 +71,6 @@ public class ShowerManager {
         } else {
             bot = end + 1;
         }
-
         return top + bot;
     }
 
@@ -112,16 +110,19 @@ public class ShowerManager {
         for (int b1 = 0; b1 < tb.length; b1++) {
 
             if (b1 < 10) {
-                System.out.print(b1 + "0 ");
+                System.out.print("0" + b1 + " ");
             } else {
                 System.out.print(b1 + " ");
             }
+
             if (curstart < 10) {
                 System.out.print("0" + curstart + ":" + minlist[currbuild % 3] + "  ");
             } else {
                 System.out.print("" + curstart + ":" + minlist[currbuild % 3] + "  ");
             }
+
             currbuild++;
+
             if (currbuild == 3) {
                 currbuild = 0;
                 curstart++;
@@ -134,12 +135,18 @@ public class ShowerManager {
             }
             System.out.println(""); //move to a new line
         }
-
     }
 
-    public static void reserve() {
-        String husk = JOptionPane.showInputDialog("Please enter the hour you wish to reserve a shower stall in 24 hour format ", "0 to 23");
-        int starthour = inputProcessor(0, 23, husk, "hour to reserve");
+    public static void savecell(int slot, int stall) {
+        int trueslot = slot;
+        String newstr = "";
+        if (timetable[trueslot][stall].equals("isFree    ")) {
+            newstr = ("You have reserved stall " + stall + " at time slot " + slot);
+            timetable[trueslot][stall] = ("onHold    ");
+            JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            newstr = ("Stall " + stall + " at time slot " + slot + " is in use, please try again");
+            JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.WARNING_MESSAGE);
+        }
     }
-
 }
