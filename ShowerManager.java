@@ -34,6 +34,11 @@ public class ShowerManager {
         captureddisplay(timetable, starttime, endtime);
         savecell(1, 1);
         captureddisplay(timetable, starttime, endtime);
+
+        while (true) {
+            userchange();
+            captureddisplay(timetable, starttime, endtime);
+        }
     }   // end main
 
     public static int inputProcessor (int botlimit, int toplimit, String userinput, String reminder) {
@@ -139,14 +144,23 @@ public class ShowerManager {
 
     public static void savecell(int slot, int stall) {
         int trueslot = slot;
+        int stall1 = stall - 1;
         String newstr = "";
-        if (timetable[trueslot][stall].equals("isFree    ")) {
+        if (timetable[trueslot][stall1].equals("isFree    ")) {
             newstr = ("You have reserved stall " + stall + " at time slot " + slot);
-            timetable[trueslot][stall] = ("onHold    ");
+            timetable[trueslot][stall1] = ("onHold    ");
             JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.PLAIN_MESSAGE);
         } else {
-            newstr = ("Stall " + stall + " at time slot " + slot + " is in use, please try again");
+            newstr = ("Stall " + stall1 + " at time slot " + slot + " is in use, please try again");
             JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    public static void userchange() {
+        String uni = (String)JOptionPane.showInputDialog("Please enter the slot number you wish to reserve", "integer");
+        int slotnumber = inputProcessor(-1, timetable.length, uni, "slot number");
+        uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reserve", "integer");
+        int stallnumber = inputProcessor(-1, timetable.length, uni, "stall number");
+        savecell(slotnumber, stallnumber);
     }
 }
