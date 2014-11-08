@@ -61,8 +61,6 @@ public class ShowerManager {
         int top = 0;    // total number of hours managed before midnight
         int bot = 0;    // total number of hours managed after midnight
 
-
-
         if (start == 12) {
             top = 12;
         } else {
@@ -109,12 +107,19 @@ public class ShowerManager {
             System.out.print("Stall " + (stall + 1) + "     ");
         } // print the line of stalls
         System.out.println();
+        System.out.println("Slot");
 
         for (int b1 = 0; b1 < tb.length; b1++) {
-            if (curstart < 10) {
-                System.out.print("0" + curstart + ":" + minlist[currbuild % 3] + "     ");
+
+            if (b1 < 10) {
+                System.out.print(b1 + "0 ");
             } else {
-                System.out.print(curstart + ":" + minlist[currbuild % 3] + "     ");
+                System.out.print(b1 + " ");
+            }
+            if (curstart < 10) {
+                System.out.print("0" + curstart + ":" + minlist[currbuild % 3] + "  ");
+            } else {
+                System.out.print("" + curstart + ":" + minlist[currbuild % 3] + "  ");
             }
             currbuild++;
             if (currbuild == 3) {
