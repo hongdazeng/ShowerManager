@@ -5,6 +5,7 @@ import java.io.*;
 public class ShowerManager {
 
     static String[][] timetable;
+    static String message = "";
 
     public static void main(String[] args) {
         JOptionPane.showMessageDialog(null, "Welcome to Shower Manager 1.0", "Welcome", JOptionPane.PLAIN_MESSAGE);
@@ -17,6 +18,7 @@ public class ShowerManager {
         final int maxint = Integer.MAX_VALUE;
         final int minint = Integer.MIN_VALUE;
 
+        message = JOptionPane.showInputDialog(null, "Please enter the message of the day", "anything?");
         String uin = JOptionPane.showInputDialog(null, "Please enter the number of shower stalls you are managing", "Set number of stalls");
         numstall = inputProcessor(0, maxint, uin, "Set stall");
         uin = JOptionPane.showInputDialog(null, "Please enter the start of the managed time \n(in integer pm, midnight is 12 am)", "Set start time");
@@ -36,7 +38,11 @@ public class ShowerManager {
         captureddisplay(timetable, starttime, endtime);
 
         while (true) {
-            userchange();
+            try {
+                userchange();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Please pick a valid time slot and stall number");
+            }
             captureddisplay(timetable, starttime, endtime);
         }
     }   // end main
@@ -104,6 +110,9 @@ public class ShowerManager {
         int currbuild = 0;
 
         int curmin = 0;
+        System.out.println("=======================================================================");
+        System.out.println("Shower Manager 1.2");
+        System.out.println("Today's Message: " + message + "\n");
         System.out.println("<><><>Shower Listings<><><>");
         System.out.print("Stalls:   ");
         for (int stall = 0; stall < tb[0].length; stall++) {
