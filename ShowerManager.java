@@ -6,6 +6,7 @@ public class ShowerManager {
 
     static String[][] timetable;
     static String message = "";
+    static boolean keepgoing = false;
 
     public static void main(String[] args) {
         JOptionPane.showMessageDialog(null, "Welcome to Shower Manager 1.0", "Welcome", JOptionPane.PLAIN_MESSAGE);
@@ -40,6 +41,9 @@ public class ShowerManager {
         while (true) {
             try {
                 userchange();
+                if (keepgoing) {
+                    break;
+                }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Please pick a valid time slot and stall number");
             }
@@ -166,10 +170,19 @@ public class ShowerManager {
     }
 
     public static void userchange() {
-        String uni = (String)JOptionPane.showInputDialog("Please enter the slot number you wish to reserve", "integer");
-        int slotnumber = inputProcessor(-1, timetable.length, uni, "slot number");
-        uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reserve", "integer");
-        int stallnumber = inputProcessor(-1, timetable.length, uni, "stall number");
-        savecell(slotnumber, stallnumber);
+        int n = JOptionPane.showConfirmDialog(
+                    null,
+                    "Would you like to continue?",
+                    "Continue",
+                    JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.NO_OPTION) {
+            keepgoing = true;
+        } else {
+            String uni = (String)JOptionPane.showInputDialog("Please enter the slot number you wish to reserve", "integer");
+            int slotnumber = inputProcessor(-1, timetable.length, uni, "slot number");
+            uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reserve", "integer");
+            int stallnumber = inputProcessor(-1, timetable.length, uni, "stall number");
+            savecell(slotnumber, stallnumber);
+        }
     }
 }
