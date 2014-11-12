@@ -35,12 +35,10 @@ public class ShowerManager {
             }
         }
         captureddisplay(timetable, starttime, endtime);
-        savecell(1, 1);
-        captureddisplay(timetable, starttime, endtime);
 
         while (true) {
             try {
-                userchange();
+                forcechange();
                 if (keepgoing) {
                     break;
                 }
@@ -170,19 +168,32 @@ public class ShowerManager {
     }
 
     public static void userchange() {
-        int n = JOptionPane.showConfirmDialog(
-                    null,
-                    "Would you like to continue?",
-                    "Continue",
-                    JOptionPane.YES_NO_OPTION);
-        if (n == JOptionPane.NO_OPTION) {
-            keepgoing = true;
+        String uni = (String)JOptionPane.showInputDialog("Please enter the slot number you wish to reserve", "integer");
+        int slotnumber = inputProcessor(-1, timetable.length, uni, "slot number");
+        uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reserve", "integer");
+        int stallnumber = inputProcessor(-1, timetable.length, uni, "stall number");
+        savecell(slotnumber, stallnumber);
+    }
+
+    public static void forcechange() {
+        String[] options = {"Reserve a spot", "Free up a spot", "Exit"};
+        String coffee = (String) JOptionPane.showInputDialog(null, "What do you want to next?", "Next Step", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        System.out.println(coffee);
+        if (coffee.equals(options[0])) {
+            userchange();
+        } else if (coffee.equals(options[1])) {
+            String uni = (String)JOptionPane.showInputDialog("Please enter the slot number you wish to reset", "integer");
+            int slot = inputProcessor(-1, timetable.length, uni, "slot number");
+            uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reset", "integer");
+            int stall = inputProcessor(-1, timetable.length, uni, "stall number");
+            int trueslot = slot;
+            int stall1 = stall - 1;
+            String newstr = "";
+            newstr = ("You have freed up stall " + stall + " at time slot " + slot);
+            timetable[trueslot][stall1] = ("isFree    ");
+            JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.PLAIN_MESSAGE);
         } else {
-            String uni = (String)JOptionPane.showInputDialog("Please enter the slot number you wish to reserve", "integer");
-            int slotnumber = inputProcessor(-1, timetable.length, uni, "slot number");
-            uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reserve", "integer");
-            int stallnumber = inputProcessor(-1, timetable.length, uni, "stall number");
-            savecell(slotnumber, stallnumber);
+            keepgoing = true;
         }
     }
 }
