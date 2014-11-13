@@ -20,11 +20,11 @@ public class ShowerManager {
         final int minint = Integer.MIN_VALUE;
 
         message = JOptionPane.showInputDialog(null, "Please enter the message of the day", "anything?");
-        String uin = JOptionPane.showInputDialog(null, "Please enter the number of shower stalls you are managing", "Set number of stalls");
+        String uin = JOptionPane.showInputDialog(null, "Please enter the number of shower stalls you are managing", "Set number of stalls (e.g. \"3\")");
         numstall = inputProcessor(0, maxint, uin, "Set stall");
-        uin = JOptionPane.showInputDialog(null, "Please enter the start of the managed time \n(in integer pm, midnight is 12 am)", "Set start time");
+        uin = JOptionPane.showInputDialog(null, "Please enter the start of the managed time \n(in integer pm, midnight is 12 am)", "Set start time (e.g. \"3\")");
         starttime = inputProcessor(0, 13, uin, "Set start time");
-        uin = JOptionPane.showInputDialog(null, "Please enter the end of the managed time \n(in integer am, midnight is 12 am)", "Set start time");
+        uin = JOptionPane.showInputDialog(null, "Please enter the end of the managed time \n(in integer am, midnight is 12 am)", "Set start time (e.g. \"3\")");
         endtime = inputProcessor(0, 13, uin, "set end time");
 
         totalhours = totaltime(starttime, endtime);
@@ -168,28 +168,28 @@ public class ShowerManager {
     }
 
     public static void userchange() {
-        String uni = (String)JOptionPane.showInputDialog("Please enter the slot number you wish to reserve", "integer");
-        int slotnumber = inputProcessor(-1, timetable.length, uni, "slot number");
+        String uni = (String)JOptionPane.showInputDialog("Please enter the time slot you wish to reserve", "integer");
+        int slotnumber = inputProcessor(-1, timetable.length, uni, "Time (e.g. \"3\")");
         uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reserve", "integer");
-        int stallnumber = inputProcessor(-1, timetable.length, uni, "stall number");
+        int stallnumber = inputProcessor(-1, timetable.length, uni, "Stall (e.g. \"3\")");
         savecell(slotnumber, stallnumber);
     }
 
     public static void forcechange() {
         String[] options = {"Reserve a spot", "Free up a spot", "Exit"};
-        String coffee = (String) JOptionPane.showInputDialog(null, "What do you want to next?", "Next Step", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        String coffee = (String) JOptionPane.showInputDialog(null, "What do you want to do next?", "Next Step", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         System.out.println(coffee);
         if (coffee.equals(options[0])) {
             userchange();
         } else if (coffee.equals(options[1])) {
-            String uni = (String)JOptionPane.showInputDialog("Please enter the slot number you wish to reset", "integer");
+            String uni = (String)JOptionPane.showInputDialog("Please enter the time slot you wish to reset", "integer (e.g. \"3\")");
             int slot = inputProcessor(-1, timetable.length, uni, "slot number");
-            uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reset", "integer");
+            uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reset", "integer (e.g. \"3\")");
             int stall = inputProcessor(-1, timetable.length, uni, "stall number");
             int trueslot = slot;
             int stall1 = stall - 1;
             String newstr = "";
-            newstr = ("You have freed up stall " + stall + " at time slot " + slot);
+            newstr = ("You have freed up stall " + stall + " at time " + slot);
             timetable[trueslot][stall1] = ("isFree    ");
             JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.PLAIN_MESSAGE);
         } else {
