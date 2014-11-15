@@ -176,7 +176,7 @@ public class ShowerManager {
     }
 
     public static void forcechange() {
-        String[] options = {"Reserve a spot", "Free up a spot", "Reset", "Exit"};
+        String[] options = {"Reserve a spot", "Free up a spot", "Reset", "Clear time", "Exit"};
         String coffee = (String) JOptionPane.showInputDialog(null, "What do you want to do next?", "Next Step", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         System.out.println(coffee);
         if (coffee.equals(options[0])) {
@@ -194,6 +194,8 @@ public class ShowerManager {
             JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.PLAIN_MESSAGE);
         } else if (coffee.equals("Reset")) {
             reset();
+        } else if (coffee.equals("Clear time")) {
+            setout (1, 2);
         } else {
             keepgoing = true;
         }
@@ -203,6 +205,15 @@ public class ShowerManager {
         for (int a1 = 0; a1 < timetable.length ; a1++) {
             for (int a2 = 0; a2 < timetable[a1].length; a2++) {
                 timetable[a1][a2] = "isFree    ";
+            }
+        }
+
+    }
+
+    public static void setout (int a, int b) {
+        for (int a1 = a; a1 < b + 1 ; a1++) {
+            for (int a2 = 0; a2 < timetable[a1].length; a2++) {
+                timetable[a1][a2] = "XXXXXxxXXX";
             }
         }
 
