@@ -1,23 +1,21 @@
-import java.util.*;
 import javax.swing.*;
 import java.io.*;
 
-public class ShowerManager {
+class ShowerManager {
 
-    static String[][] timetable;
-    static String message = "";
-    static boolean keepgoing = false;
+    private static String[][] timetable;
+    private static String message = "";
+    private static boolean keepgoing = false;
 
     public static void main(String[] args) {
         JOptionPane.showMessageDialog(null, "Welcome to Shower Manager 1.0", "Welcome", JOptionPane.PLAIN_MESSAGE);
 
-        int numstall = 0;   // the number of shower stalls availiable in a dorm
-        int starttime = 8;  // start of reserved time in pm
-        int endtime = 8;    // end of reserved time in am
-        int totalhours = 0; // total number of hours managed
+        int numstall;   // the number of shower stalls availiable in a dorm
+        int starttime;  // start of reserved time in pm
+        int endtime;    // end of reserved time in am
+        int totalhours; // total number of hours managed
 
         final int maxint = Integer.MAX_VALUE;
-        final int minint = Integer.MIN_VALUE;
 
         message = JOptionPane.showInputDialog(null, "Please enter the message of the day", "anything?");
         String uin = JOptionPane.showInputDialog(null, "Please enter the number of shower stalls you are managing", "Set number of stalls (e.g. \"3\")");
@@ -49,7 +47,7 @@ public class ShowerManager {
         }
     }   // end main
 
-    public static int inputProcessor (int botlimit, int toplimit, String userinput, String reminder) {
+    private static int inputProcessor(int botlimit, int toplimit, String userinput, String reminder) {
         String uin = userinput;
         int finalreturn = 0;
         boolean notgoodenough = true;
@@ -69,9 +67,9 @@ public class ShowerManager {
         return finalreturn;
     }
 
-    public static int totaltime (int start, int end) {
-        int top = 0;    // total number of hours managed before midnight
-        int bot = 0;    // total number of hours managed after midnight
+    private static int totaltime(int start, int end) {
+        int top;    // total number of hours managed before midnight
+        int bot;    // total number of hours managed after midnight
 
         if (start == 12) {
             top = 12;
@@ -87,7 +85,7 @@ public class ShowerManager {
         return top + bot;
     }
 
-    public static String captureddisplay(String[][] tb, int start, int end) {
+    private static String captureddisplay(String[][] tb, int start, int end) {
         // code from Ernest Friedman-Hill via stackoverflow
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
@@ -96,7 +94,7 @@ public class ShowerManager {
         // Tell Java to use your special stream
         System.setOut(ps);
         // The display to spill its guts
-        display(tb, start, end);
+        display(tb, start);
         // Put things back
         System.out.flush();
         System.setOut(old);
@@ -105,13 +103,11 @@ public class ShowerManager {
         return baos.toString();
     }
 
-    public static void display(String[][] tb, int start, int end) {
+    private static void display(String[][] tb, int start) {
         int curstart = start;
-        int curend =  end + 12;
         String[] minlist = {"00", "20", "40"};
         int currbuild = 0;
 
-        int curmin = 0;
         System.out.println("=======================================================================");
         System.out.println("Shower Manager 1.2");
         System.out.println("Today's Message: " + message + "\n");
@@ -153,13 +149,12 @@ public class ShowerManager {
         }
     }
 
-    public static void savecell(int slot, int stall) {
-        int trueslot = slot;
+    private static void savecell(int slot, int stall) {
         int stall1 = stall - 1;
-        String newstr = "";
-        if (timetable[trueslot][stall1].equals("isFree    ")) {
+        String newstr;
+        if (timetable[slot][stall1].equals("isFree    ")) {
             newstr = ("You have reserved stall " + stall + " at time slot " + slot);
-            timetable[trueslot][stall1] = ("onHold    ");
+            timetable[slot][stall1] = ("onHold    ");
             JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.PLAIN_MESSAGE);
         } else {
             newstr = ("Stall " + stall1 + " at time slot " + slot + " is in use, please try again");
@@ -167,7 +162,7 @@ public class ShowerManager {
         }
     }
 
-    public static void userchange() {
+    private static void userchange() {
         String uni = (String)JOptionPane.showInputDialog("Please enter the time slot you wish to reserve", "integer");
         int slotnumber = inputProcessor(-1, timetable.length, uni, "Time (e.g. \"3\")");
         uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reserve", "integer");
@@ -175,7 +170,7 @@ public class ShowerManager {
         savecell(slotnumber, stallnumber);
     }
 
-    public static void forcechange() {
+    private static void forcechange() {
         String[] options = {"Reserve a spot", "Free up a spot", "Reset", "Clear time", "Exit"};
         String coffee = (String) JOptionPane.showInputDialog(null, "What do you want to do next?", "Next Step", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         System.out.println(coffee);
@@ -186,22 +181,21 @@ public class ShowerManager {
             int slot = inputProcessor(-1, timetable.length, uni, "slot number");
             uni = (String)JOptionPane.showInputDialog("Please enter the stall number you wish to reset", "integer (e.g. \"3\")");
             int stall = inputProcessor(-1, timetable.length, uni, "stall number");
-            int trueslot = slot;
             int stall1 = stall - 1;
-            String newstr = "";
+            String newstr;
             newstr = ("You have freed up stall " + stall + " at time " + slot);
-            timetable[trueslot][stall1] = ("isFree    ");
+            timetable[slot][stall1] = ("isFree    ");
             JOptionPane.showMessageDialog(null, newstr, "Success", JOptionPane.PLAIN_MESSAGE);
         } else if (coffee.equals("Reset")) {
             reset();
         } else if (coffee.equals("Clear time")) {
-            setout (1, 2);
+            setout ();
         } else {
             keepgoing = true;
         }
     }
 
-    public static void reset () {
+    private static void reset() {
         for (int a1 = 0; a1 < timetable.length ; a1++) {
             for (int a2 = 0; a2 < timetable[a1].length; a2++) {
                 timetable[a1][a2] = "isFree    ";
@@ -210,8 +204,8 @@ public class ShowerManager {
 
     }
 
-    public static void setout (int a, int b) {
-        for (int a1 = a; a1 < b + 1 ; a1++) {
+    private static void setout() {
+        for (int a1 = 1; a1 < 2 + 1 ; a1++) {
             for (int a2 = 0; a2 < timetable[a1].length; a2++) {
                 timetable[a1][a2] = "XXXXXxxXXX";
             }
